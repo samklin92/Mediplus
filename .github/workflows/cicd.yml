@@ -68,7 +68,7 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECR
         run: |
-          docker build -t mediplus-ecr .
+          run: IMAGE_URI=109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplux:$GITHUB_RUN_NUMBER
           docker tag mediplus-ecr:latest 109804294707.dkr.ecr.eu-north-1.amazonaws.com/mediplus-ecr:latest
           docker push 109804294707.dkr.ecr.eu-north-1.amazonaws.com/mediplus-ecr:latest
 

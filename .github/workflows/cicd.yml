@@ -13,21 +13,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      #- name: Configure AWS credentials
-       # run: |
-       #   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-       #   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-       #   aws-region: eu-north-1
+      - name: Configure AWS credentials
+        run: |
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
 
-    #  - name: Login to Amazon ECR
-      #  run: |
-         # aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 109804294707.dkr.ecr.eu-north-1.amazonaws.com
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 109804294707.dkr.ecr.eu-north-1.amazonaws.com
 
-    #  - name: Build, and push image to Amazon ECR
-       # run: |
-        #  docker build -t mediplus-ecr .
-        #  docker tag mediplus-ecr:latest 109804294707.dkr.ecr.eu-north-1.amazonaws.com/mediplus-ecr:latest
-        #  docker push 109804294707.dkr.ecr.eu-north-1.amazonaws.com/mediplus-ecr:latest
+      - name: Build, and push image to Amazon ECR
+        run: |
+          docker build -t mediplus-ecr .
+          docker tag mediplus-ecr:latest 109804294707.dkr.ecr.eu-north-1.amazonaws.com/mediplus-ecr:latest
+          docker push 109804294707.dkr.ecr.eu-north-1.amazonaws.com/mediplus-ecr:latest
 
   deploy:
     runs-on: ubuntu-latest

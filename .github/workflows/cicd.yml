@@ -42,4 +42,4 @@ jobs:
 
           ssh -o strictHostkeycheking=no -i mykey.pem ubuntu@13.51.55.224 "docker ps"
 
-          ssh -o strictHostkeycheking=no -i mykey.pem ubuntu@13.51.55.224 "hostnamectl"
+          ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@13.51.55.224 "hostnamectl"

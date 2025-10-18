@@ -39,7 +39,6 @@ jobs:
         run: |
           echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > mykey.pem
           chmod 600 mykey.pem
-          cat mykey.pem
 
           ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@51.20.136.222 "docker ps"
 

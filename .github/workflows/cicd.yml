@@ -24,24 +24,10 @@ jobs:
         run: |
           aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 109804294707.dkr.ecr.eu-north-1.amazonaws.com
 
-      - name: Build and Push Docker Image
+      - name: Build, tag, and push image to Amazon ECR
         run: |
-          IMAGE_URI=109804294707.dkr.ecr.eu-north-1.amazonaws.com/mediplus-ecr:${{ github.run_number }}
-          docker build -t $IMAGE_URI .
-          docker push $IMAGE_URI
+          docker build -t medplus .
+          docker tag medplus:v1 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:v1
+          docker push 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:v1
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build-push
-
-    steps:
-      - name: Deploy to EC2
-        run: |
-          echo "${{ secrets.SSH_KEY }}" > mykey.pem
-          chmod 600 mykey.pem
-          ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@13.51.55.224 << 'EOF'
-            docker pull 109804294707.dkr.ecr.eu-north-1.amazonaws.com/mediplus-ecr:${{ github.run_number }}
-            docker stop mediplus || true
-            docker rm mediplus || true
-            docker run -d -p 80:80 --name mediplus 109804294707.dkr.ecr.eu-north-1.amazonaws.com/mediplus-ecr:${{ github.run_number }}
-          EOF
+ 

@@ -27,8 +27,8 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         run: |
           docker build -t medplus .
-          docker tag medplus:v2 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:v2
-          docker push 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:v2
+          docker tag medplus:latest 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:latest
+          docker push 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,9 +41,9 @@ jobs:
           chmod 600 mykey.pem
           cat mykey.pem
 
-          ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@51.20.136.222 "docker pull 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:v2"
+          ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@51.20.136.222 "docker pull ps"
 
-          ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@51.20.136.222 "docker run -d -p 80:80 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:v2"
+          ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@51.20.136.222 "hostnamectl"
 
 
  

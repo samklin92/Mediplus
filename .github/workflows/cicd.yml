@@ -13,22 +13,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-     # - name: Configure AWS credentials
-     #   uses: aws-actions/configure-aws-credentials@v4
-     #   with:
-     #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-     #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-     #     aws-region: eu-north-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
 
-     # - name: Login to Amazon ECR
-     #   run: |
-     #     aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 109804294707.dkr.ecr.eu-north-1.amazonaws.com
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 109804294707.dkr.ecr.eu-north-1.amazonaws.com
 
-     # - name: Build, tag, and push image to Amazon ECR
-     #   run: |
-     #     docker build -t medplus .
-     #     docker tag medplus:latest 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:latest
-     #     docker push 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:latest
+      - name: Build, tag, and push image to Amazon ECR
+        run: |
+          docker build -t medplus .
+          docker tag medplus:v2 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:v2
+          docker push 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:v2
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,9 +41,9 @@ jobs:
           chmod 600 mykey.pem
           cat mykey.pem
 
-          ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@51.20.136.222 "docker ps"
+          ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@51.20.136.222 "docker pull 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:v2"
 
-          ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@51.20.136.222 "hostnamectl"
+          ssh -o StrictHostKeyChecking=no -i mykey.pem ubuntu@51.20.136.222 "docker run -d -p 80:80 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:v2"
 
 
  

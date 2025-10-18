@@ -30,4 +30,14 @@ jobs:
           docker tag medplus:latest 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:latest
           docker push 109804294707.dkr.ecr.eu-north-1.amazonaws.com/medplus:latest
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-push
+
+    steps:
+      - name: check my ssh key
+        run: |
+          echo "${{ secrets.SSH_KEY }}" > mykey.pem
+          chmod 600 mykey.pem
+          cat mykey.pem
  

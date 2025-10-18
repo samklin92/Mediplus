@@ -37,7 +37,7 @@ jobs:
     steps:
       - name: check my ssh key
         run: |
-          echo "${{ secrets.SSH_KEY }}" > mykey.pem
+          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > mykey.pem
           chmod 600 mykey.pem
           cat mykey.pem
 
